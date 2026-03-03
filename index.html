@@ -1,71 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>交流群入口</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>红包营销页面</title>
 <style>
-body{
-    margin:0;
-    background:#f4f6f8;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-    text-align:center;
-}
-
-.container{
-    max-width:420px;
-    margin:60px auto;
-    background:#ffffff;
-    padding:30px;
-    border-radius:16px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.08);
-}
-
-h1{
-    font-size:22px;
-    margin-bottom:10px;
-    color:#333;
-}
-
-p{
-    color:#666;
-    font-size:14px;
-    margin-bottom:25px;
-}
-
-.qr{
-    width:260px;
-    border-radius:12px;
-    transition:0.3s;
-}
-
-.qr:hover{
-    transform:scale(1.03);
-}
-
-.footer{
-    margin-top:20px;
-    font-size:12px;
-    color:#999;
-}
+  body {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #fff0f0;
+    text-align: center;
+    padding: 30px;
+  }
+  h1 {
+    color: #e33;
+    margin-bottom: 20px;
+  }
+  #groupCount {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  #redPacket {
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin-bottom: 10px;
+  }
+  #redPacket:active {
+    transform: scale(1.1);
+  }
+  #countdown {
+    font-size: 18px;
+    color: #e33;
+    margin-top: 10px;
+  }
+  /* 点击飞出动画 */
+  .fly {
+    position: absolute;
+    font-size: 16px;
+    color: #e33;
+    animation: flyUp 1s forwards;
+    pointer-events: none;
+  }
+  @keyframes flyUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-50px); }
+  }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h1>扫码进入交流群</h1>
-    <p>二维码定期更新，请放心使用</p>
+<h1>🔥 限时红包活动 🔥</h1>
 
-    <a href="qr.jpg" target="_blank">
-        <img class="qr" src="https://fuliqun888-qr-1407854118.cos.ap-shanghai.myqcloud.com/qr.jpg">
-    </a>
+<!-- 已进群人数 -->
+<div id="groupCount">已进群 <span id="count">3287</span> 人</div>
 
-    <div class="footer">
-        如二维码失效，请刷新页面
-    </div>
-</div>
+<!-- 红包图片 -->
+<img id="redPacket" src="https://fuliqun888-qr-1407854118.cos.ap-shanghai.myqcloud.com/qr.jpg" alt="点击领红包">
+
+<!-- 红包倒计时 -->
+<div id="countdown">红包倒计时: <span id="timer">00:59</span></div>
+
+<script>
+// 已进群人数动态增加
+let count = 3287;
+const countEl = document.getElementById("count");
+setInterval(() => {
+    count += Math.floor(Math.random() * 3); // 每秒随机增加0-2人
+    countEl.textContent = count;
+}, 1000);
+
+// 红包倒计时 1分钟
+let time = 59; 
+const timerEl = document.getElementById("timer");
+const countdown = setInterval(() => {
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    time--;
+    if(time < 0) clearInterval(countdown);
+}, 1000);
+
+// 点击红包动画
+const redPacket = document.getElementById("redPacket");
+redPacket.addEventListener("click", (e) => {
+    // 创建飞出文字
+    const fly = document.createElement("div");
+    fly.className = "fly";
+    fly.textContent = "+1红包";
+    document.body.appendChild(fly);
+    
+    // 放到点击位置
+    fly.style.left = e.clientX + "px";
+    fly.style.top = e.clientY + "px";
+
+    // 1秒后移除
+    setTimeout(() => {
+        document.body.removeChild(fly);
+    }, 1000);
+});
+</script>
 
 </body>
 </html>
